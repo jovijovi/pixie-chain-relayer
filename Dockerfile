@@ -1,11 +1,16 @@
-FROM golang:1.15 AS build
-WORKDIR /app
-RUN git clone https://github.com/polynetwork/heco-relayer.git  && \
-    cd heco-relayer && \
-    go build -o run_heco_relayer main.go
+ARG GO_VER
+ARG ALPINE_VER
+FROM alpine:${ALPINE_VER} as base
 
-FROM ubuntu:18.04
-WORKDIR /app
-COPY ./config.json config.json
-COPY --from=build /app/heco-relayer/run_heco_relayer run_heco_relayer
-CMD ["/bin/bash"]
+FROM golang:${GO_VER}-alpine AS builder
+RUN apk add --no-cache make gcc musl-dev linux-headers git
+ADD . /src
+WORKDIR /src
+RUN make build
+
+FROM alpine:$ALPINE_VER
+MAINTAINER PixieChain
+COPY --from=builder /src/build /opt/app/
+WORKDIR /opt/app
+ENTRYPOINT [ "/opt/app/relayer" ]
+CMD ["--cliconfig", "/opt/app/conf/config.json"]
