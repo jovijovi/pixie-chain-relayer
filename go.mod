@@ -12,11 +12,6 @@ require (
 	github.com/polynetwork/eth-contracts v0.0.0-20200903021827-c9212e419943
 	github.com/polynetwork/poly v0.0.0-20200722075529-eea88acb37b2
 	github.com/polynetwork/poly-go-sdk v0.0.0-20200729103825-af447ef53ef0
-	github.com/stretchr/testify v1.5.1
 	github.com/urfave/cli v1.22.4
 	launchpad.net/gocheck v0.0.0-20140225173054-000000000087 // indirect
-)
-
-replace (
-	github.com/polynetwork/eth-contracts v0.0.0-20200903021827-c9212e419943 => ./../eth-contracts
 )
